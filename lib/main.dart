@@ -1,7 +1,9 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:tictactoe/game.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,20 +41,75 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       backgroundColor: Colors.deepPurple,
-      body: Column(
-          children: [
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top:200.0),
+      body: Center(
+          child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top:200.0),
                   child: Text("Who's playing?", style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: 'Roboto',
+                    fontSize: 34,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'HoneyCrepes',
                     color: Colors.white
                   ),
                 ),
                 ),
-              )
-          ],
+                Padding(
+                  padding: EdgeInsets.only(top: 30.0, bottom: 5.0, left: 30.0, right: 30.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: "Player One",
+                      filled: true,
+                      fillColor: Color(0xFF000080),
+                      hintStyle: TextStyle(color: Colors.grey, fontSize: 25),
+                      prefixIcon: Icon(Icons.close, color: Colors.red, size: 45),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 30.0, bottom: 5.0, left: 30.0, right: 30.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: "Player Two",
+                      filled: true,
+                      fillColor: Color(0xFF000080),
+                      hintStyle: TextStyle(color: Colors.grey, fontSize: 25),
+                      prefixIcon: Icon(Icons.circle_outlined, color: Colors.yellow, size: 35),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 30.0, bottom: 5.0, left: 30.0, right: 30.0),
+                  child: Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacement( // replaces current route with new route
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: Duration(milliseconds: 1000),
+                            child: GameLogic(),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                      ),
+                      child: Text(
+                        "START GAME",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'HoneyCrepes',
+                            color: Colors.white,
+                            fontSize: 20
+                        ),
+                      ),
+                      ),
+                  ),
+                  ),
+              ],
+          )
         ),
       );
     }
@@ -78,7 +135,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         print("Animation Completed");
         print("Navigator Context: $context");
 
-        Navigator.push(
+        Navigator.pushReplacement( // replaces current route with new route
           context,
           PageTransition(
             type: PageTransitionType.topToBottom,
