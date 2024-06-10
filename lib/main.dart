@@ -89,7 +89,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           PageTransition(
                             type: PageTransitionType.fade,
                             duration: Duration(milliseconds: 1000),
-                            child: GameLogic(),
+                            child: GameLogic(
+                              name1: "player1", // Provide parameter values here
+                              name2: "player2",
+                            ),
                           ),
                         );
                       },
