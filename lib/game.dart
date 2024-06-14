@@ -18,6 +18,7 @@ class _GameLogicState extends State<GameLogic> {
 
   List<bool> isTapped = List.filled(9, false);
   List<String> cellState = List.filled(9, '');
+  List<Icon> cellIcons = []; // by default
 
   @override
   void initState() {
@@ -83,7 +84,7 @@ class _GameLogicState extends State<GameLogic> {
                                 fontFamily: 'HoneyCrepes',
                                 color: Colors.white)),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(9.0),
                           child: Icon(Icons.circle_outlined,
                               color: Colors.yellow, size: 45),
                         ),
@@ -120,6 +121,16 @@ class _GameLogicState extends State<GameLogic> {
   }
 
   Widget buildInkWellWidget(bool isTapped, String player, int index) {
+    Icon cross = Icon(key: ValueKey<String>(player),
+        Icons.close,
+        color: Colors.red,
+        size: 70);
+
+    Icon circle = Icon(key: ValueKey<String>(player),
+        Icons.circle_outlined,
+        color: Colors.yellow,
+        size: 70);
+
     return InkWell(
       child: AnimatedContainer(
         margin: EdgeInsets.all(10),
@@ -134,12 +145,9 @@ class _GameLogicState extends State<GameLogic> {
           transitionBuilder: (Widget child, Animation<double> animation) {
             return ScaleTransition(child: child, scale: animation);
           },
-          child: Icon(
-            key: ValueKey<String>(player),
-            player == player1 ? Icons.close : Icons.circle_outlined,
-            color: (this.isTapped[index])? (player == player1 ? Colors.red : Colors.yellow) : Color(0xFF000080),
-            size: 70,
-          ),
+          child: (this.isTapped[index])
+              ? (player == player1 ? cross : circle)
+              : Icon(Icons.abc, color: Color(0xFF000080)),
         ),
       ),
       onTap: () {
@@ -147,10 +155,34 @@ class _GameLogicState extends State<GameLogic> {
           setState(() {
             this.isTapped[index] = true;
             cellState[index] = currentPlayer;
+         //   cellIcons[index] = currentPlayer == player1 ? cross : circle;
+          //  checkResult();
             currentPlayer = currentPlayer == player1 ? player2 : player1;
           });
         }
       },
     );
   }
+
+  // void checkResult() {
+  //   List<List<int>> winPatterns = [
+  //     [0, 1, 2],
+  //     [3, 4, 5],
+  //     [6, 7, 8],
+  //     [0, 3, 6],
+  //     [1, 4, 7],
+  //     [2, 5, 8],
+  //     [0, 4, 8],
+  //     [2, 4, 6],
+  //   ];
+  //
+  //   for (var pattern in winPatterns) {
+  //     if (cellIcons[pattern[0]] == cellIcons[pattern[1]] &&
+  //         cellIcons[pattern[1]] == cellIcons[pattern[2]] &&
+  //         cellIcons[pattern[0]] != '') {
+  //       print("Player ${cellState[pattern[0]]} wins!");
+  //       return;
+  //     }
+  //   }
+  // }
 }
