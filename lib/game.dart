@@ -18,7 +18,7 @@ class _GameLogicState extends State<GameLogic> {
 
   List<bool> isTapped = List.filled(9, false);
   List<String> cellState = List.filled(9, '');
-  List<Icon> cellIcons = []; // by default
+  List<Icon?> cellIcons = List.filled(9, null); // by default
 
   @override
   void initState() {
@@ -155,8 +155,8 @@ class _GameLogicState extends State<GameLogic> {
           setState(() {
             this.isTapped[index] = true;
             cellState[index] = currentPlayer;
-         //   cellIcons[index] = currentPlayer == player1 ? cross : circle;
-          //  checkResult();
+            cellIcons[index] = currentPlayer == player1 ? cross : circle;
+            checkResult(cross, circle);
             currentPlayer = currentPlayer == player1 ? player2 : player1;
           });
         }
@@ -164,25 +164,39 @@ class _GameLogicState extends State<GameLogic> {
     );
   }
 
-  // void checkResult() {
-  //   List<List<int>> winPatterns = [
-  //     [0, 1, 2],
-  //     [3, 4, 5],
-  //     [6, 7, 8],
-  //     [0, 3, 6],
-  //     [1, 4, 7],
-  //     [2, 5, 8],
-  //     [0, 4, 8],
-  //     [2, 4, 6],
-  //   ];
-  //
-  //   for (var pattern in winPatterns) {
-  //     if (cellIcons[pattern[0]] == cellIcons[pattern[1]] &&
-  //         cellIcons[pattern[1]] == cellIcons[pattern[2]] &&
-  //         cellIcons[pattern[0]] != '') {
-  //       print("Player ${cellState[pattern[0]]} wins!");
-  //       return;
-  //     }
-  //   }
-  // }
+  void checkResult(Icon cross, Icon circle) {
+    List<List<int>> winPatterns = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    Icon? firstIcon;
+    Icon? secondIcon;
+    Icon? thirdIcon;
+
+    for (var pattern in winPatterns) {
+
+      if (cellState[pattern[0]] == cellState[pattern[1]] &&
+          cellState[pattern[1]] == cellState[pattern[2]] &&
+          cellState[pattern[0]] != '') {
+
+        firstIcon = cellIcons[pattern[0]];
+        secondIcon = cellIcons[pattern[1]];
+        thirdIcon = cellIcons[pattern[2]];
+
+        List<Icon?> winnerList = [firstIcon,secondIcon,thirdIcon];
+
+
+        print("${cellState[pattern[0]]} has won!");
+
+        return;
+      }
+    }
+  }
 }
